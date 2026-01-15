@@ -5,6 +5,7 @@ const quickLinks = [
   { href: "#produkty", label: "Produkty" },
   { href: "#proces", label: "Proces" },
   { href: "#kvalita", label: "Kvalita" },
+  { href: "#laboratorium", label: "Laboratórium" },
   { href: "#kontakt", label: "Kontakt" },
 ];
 

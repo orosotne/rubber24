@@ -9,7 +9,11 @@ import {
   Calendar, 
   Users, 
   Zap,
-  Shield
+  Shield,
+  Award,
+  ScanSearch,
+  ClipboardCheck,
+  PackageCheck
 } from "lucide-react";
 
 const qualityPoints = [
@@ -30,11 +34,22 @@ const qualityPoints = [
   },
 ];
 
-const certifications = [
-  "ISO 9001 (placeholder)",
-  "Interné štandardy kvality",
-  "Vstupná kontrola materiálu",
-  "Výstupná kontrola",
+const qualityStandards = [
+  {
+    icon: ScanSearch,
+    title: "Vstupná kontrola",
+    description: "100% kontrola všetkých vstupných surovín a materiálov.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Medzioperačná kontrola",
+    description: "Sledovanie kvality počas celého výrobného procesu.",
+  },
+  {
+    icon: PackageCheck,
+    title: "Výstupná kontrola",
+    description: "Kontrola každého produktu pred expedíciou.",
+  },
 ];
 
 const whyUs = [
@@ -99,28 +114,64 @@ export function Quality() {
         </div>
 
         {/* Certifications */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-          className="brutal-card p-6 md:p-8 bg-white mb-16"
-        >
-          <h3 className="heading-md mb-6 text-center">Certifikácie a štandardy</h3>
-          <div className="flex flex-wrap justify-center gap-4">
-            {certifications.map((cert) => (
-              <span
-                key={cert}
-                className="px-4 py-2 bg-slate-100 border-2 border-black text-sm font-bold uppercase"
+        <div className="mb-16">
+          <h3 className="heading-md mb-8 text-center">Certifikácie a štandardy</h3>
+          
+          {/* ISO 9001 - Featured */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="brutal-card p-6 md:p-8 bg-slate-900 text-white mb-6"
+          >
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-20 h-20 bg-orange-500 border-2 border-black flex items-center justify-center">
+                  <Award className="w-10 h-10 text-black" />
+                </div>
+              </div>
+              <div className="text-center md:text-left flex-1">
+                <h4 className="text-2xl md:text-3xl font-bold uppercase tracking-tight mb-2">
+                  ISO 9001:2015
+                </h4>
+                <p className="text-gray-300 text-lg">
+                  Certifikovaný systém manažérstva kvality
+                </p>
+                <p className="text-gray-400 mt-2">
+                  Medzinárodne uznávaný štandard pre riadenie kvality vo výrobných procesoch. 
+                  Garantuje konzistentnú kvalitu produktov a neustále zlepšovanie.
+                </p>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Quality Standards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {qualityStandards.map((standard, index) => (
+              <motion.div
+                key={standard.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.4, delay: index * 0.1 }}
+                className="brutal-card p-5 bg-white"
               >
-                {cert}
-              </span>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-orange-500 border-2 border-black flex items-center justify-center flex-shrink-0">
+                    <standard.icon className="w-6 h-6 text-black" />
+                  </div>
+                  <div>
+                    <h4 className="font-bold uppercase text-sm tracking-tight mb-1">
+                      {standard.title}
+                    </h4>
+                    <p className="text-gray-600 text-sm">{standard.description}</p>
+                  </div>
+                </div>
+              </motion.div>
             ))}
           </div>
-          <p className="text-center text-gray-500 text-sm mt-4">
-            * Konkrétne certifikácie budú doplnené
-          </p>
-        </motion.div>
+        </div>
 
         {/* Why RUBBER 24 */}
         <div>

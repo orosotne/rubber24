@@ -10,6 +10,7 @@ const navItems = [
   { href: "#produkty", label: "Produkty" },
   { href: "#proces", label: "Proces" },
   { href: "#kvalita", label: "Kvalita" },
+  { href: "#laboratorium", label: "Laboratórium" },
   { href: "#o-nas", label: "O nás" },
   { href: "#kontakt", label: "Kontakt" },
 ];

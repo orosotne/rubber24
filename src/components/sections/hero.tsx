@@ -8,18 +8,18 @@ import { Cog, Factory, Headphones, ArrowRight, FileText } from "lucide-react";
 const benefits = [
   {
     icon: Cog,
-    title: "Prototypovanie",
-    description: "Rýchly vývoj a testovanie",
+    title: "Vývoj zmesí",
+    description: "Receptúry na mieru",
   },
   {
     icon: Factory,
-    title: "Sériová výroba",
-    description: "Malé aj veľké série",
+    title: "Výroba zmesí",
+    description: "Presné technické parametre",
   },
   {
     icon: Headphones,
     title: "Technická podpora",
-    description: "Konzultácie a poradenstvo",
+    description: "Konzultácie a optimalizácia",
   },
 ];
 
@@ -62,17 +62,17 @@ export function Hero() {
             <span className="brutal-tag mb-6">Od roku 2016</span>
             
             <h1 className="heading-xl mb-6">
-              Vývoj a výroba
+              Výskum a vývoj
               <br />
-              <span className="text-orange-500">gumových komponentov</span>
+              <span className="text-orange-500">gumových zmesí</span>
               <br />
               na mieru
             </h1>
             
             <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-xl">
-              Od návrhu a prototypu po sériovú výrobu s dôrazom na presnosť, 
-              opakovateľnosť a kontrolu kvality. Riešenia pre priemysel, 
-              automotive a námorné aplikácie.
+              Navrhujeme a vyrábame gumové zmesi s technickými parametrami 
+              presne podľa vašich požiadaviek. Špecializujeme sa na vývoj 
+              receptúr pre priemysel, automotive a námorné aplikácie.
             </p>
 
             {/* Benefits */}

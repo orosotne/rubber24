@@ -6,6 +6,7 @@ import {
   Industries,
   Process,
   Quality,
+  Laboratory,
   Gallery,
   FAQ,
   Contact,
@@ -22,6 +23,7 @@ export default function Home() {
         <Industries />
         <Process />
         <Quality />
+        <Laboratory />
         <Gallery />
         <FAQ />
         <Contact />

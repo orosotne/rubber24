@@ -18,7 +18,6 @@ if (fs.existsSync(envPath)) {
 }
 
 const API_KEY = process.env.GOOGLE_API_KEY;
-
 if (!API_KEY) {
   console.error("ERROR: GOOGLE_API_KEY not found");
   process.exit(1);
@@ -27,14 +26,15 @@ if (!API_KEY) {
 const ai = new GoogleGenAI({ apiKey: API_KEY });
 const OUTPUT_DIR = path.join(process.cwd(), "public", "generated");
 
-async function generateImage(prompt: string, name: string): Promise<boolean> {
-  console.log(`Generating: ${name}`);
-  console.log(`Prompt: ${prompt}`);
+async function generateImage() {
+  console.log("🎨 Generating new ship fender image...");
+
+  const prompt = `Professional commercial photograph of brand NEW pristine black rubber ship fenders at modern seaport, large cylindrical marine dock fenders with perfect smooth rubber surface, no damage no cracks no rust, clean industrial maritime setting, fenders protecting clean white cargo ship hull, bright daylight, modern port facility, product showcase style photography, high quality 4K, clean and professional`;
 
   try {
     const response = await ai.models.generateContent({
       model: "gemini-3-pro-image-preview",
-      contents: [{ text: `Generate a high quality professional photograph: ${prompt}` }],
+      contents: [{ text: prompt }],
       config: {
         responseModalities: ["TEXT", "IMAGE"],
       },
@@ -46,23 +46,18 @@ async function generateImage(prompt: string, name: string): Promise<boolean> {
         for (const part of candidate.content.parts) {
           if (part.inlineData && part.inlineData.data) {
             const buffer = Buffer.from(part.inlineData.data, "base64");
-            const outputPath = path.join(OUTPUT_DIR, `${name}.png`);
+            const outputPath = path.join(OUTPUT_DIR, "product-ship-fenders.png");
             fs.writeFileSync(outputPath, buffer);
-            console.log(`✓ Saved: ${outputPath}`);
-            return true;
+            console.log(`✅ Saved: ${outputPath}`);
+            return;
           }
         }
       }
     }
-    return false;
+    console.log("⚠️ No image generated");
   } catch (error: any) {
-    console.error(`✗ Error:`, error.message || error);
-    return false;
+    console.error("❌ Error:", error.message || error);
   }
 }
 
-// Generate new hero image - rubber laboratory with equipment
-generateImage(
-  "Professional rubber testing laboratory interior, European woman scientist in white lab coat working with tensile testing machine and rheometer equipment, Alpha Industries style lab equipment, rubber samples on workbench, modern R&D facility with testing instruments, clean scientific environment, high quality professional photograph, 4K, realistic",
-  "hero-industrial"
-);
+generateImage();

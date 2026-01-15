@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeader } from "@/components/shared";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -20,7 +20,12 @@ import {
   Phone, 
   Clock, 
   Upload,
-  Send
+  Send,
+  Loader2,
+  CheckCircle,
+  XCircle,
+  X,
+  FileText
 } from "lucide-react";
 
 const productTypes = [
@@ -47,8 +52,8 @@ const contactInfo = [
   {
     icon: Phone,
     title: "Telefón",
-    content: ["[doplníme]"],
-    href: "tel:+421000000000",
+    content: ["+421 917 588 737"],
+    href: "tel:+421917588737",
   },
   {
     icon: Clock,
@@ -56,6 +61,12 @@ const contactInfo = [
     content: ["Po - Pi: 8:00 - 16:00"],
   },
 ];
+
+// Max file size: 10MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const ALLOWED_EXTENSIONS = ['pdf', 'dwg', 'jpg', 'jpeg', 'png', 'webp'];
+
+type SubmitStatus = 'idle' | 'loading' | 'success' | 'error';
 
 export function Contact() {
   const [formData, setFormData] = useState({
@@ -67,16 +78,141 @@ export function Contact() {
     message: "",
     gdprConsent: false,
   });
+  const [file, setFile] = useState<File | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle');
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const resetForm = () => {
+    setFormData({
+      company: "",
+      name: "",
+      email: "",
+      phone: "",
+      productType: "",
+      message: "",
+      gdprConsent: false,
+    });
+    setFile(null);
+  };
+
+  const validateFile = (file: File): string | null => {
+    const extension = file.name.split('.').pop()?.toLowerCase();
+    if (!extension || !ALLOWED_EXTENSIONS.includes(extension)) {
+      return `Nepovolený typ súboru. Povolené sú: ${ALLOWED_EXTENSIONS.join(', ')}`;
+    }
+    if (file.size > MAX_FILE_SIZE) {
+      return 'Súbor je príliš veľký. Maximálna veľkosť je 10MB.';
+    }
+    return null;
+  };
+
+  const handleFileSelect = (selectedFile: File) => {
+    const error = validateFile(selectedFile);
+    if (error) {
+      setErrorMessage(error);
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+    setFile(selectedFile);
+    setErrorMessage("");
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    // Form submission logic would go here
-    console.log("Form submitted:", formData);
-    alert("Ďakujeme za váš dopyt. Ozveme sa vám čo najskôr.");
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile) {
+      handleFileSelect(droppedFile);
+    }
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    if (selectedFile) {
+      handleFileSelect(selectedFile);
+    }
+  };
+
+  const removeFile = () => {
+    setFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (!formData.gdprConsent) {
+      setErrorMessage("Pre odoslanie dopytu je potrebný súhlas so spracovaním osobných údajov.");
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+      return;
+    }
+
+    setSubmitStatus('loading');
+    setErrorMessage("");
+
+    try {
+      const submitData = new FormData();
+      submitData.append('company', formData.company);
+      submitData.append('name', formData.name);
+      submitData.append('email', formData.email);
+      submitData.append('phone', formData.phone);
+      submitData.append('productType', formData.productType);
+      submitData.append('message', formData.message);
+      submitData.append('gdprConsent', String(formData.gdprConsent));
+      
+      if (file) {
+        submitData.append('attachment', file);
+      }
+
+      const response = await fetch('/api/inquiry', {
+        method: 'POST',
+        body: submitData,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Chyba pri odosielaní dopytu');
+      }
+
+      setSubmitStatus('success');
+      resetForm();
+      
+      // Reset success status after 10 seconds
+      setTimeout(() => setSubmitStatus('idle'), 10000);
+      
+    } catch (error) {
+      console.error('Submit error:', error);
+      setErrorMessage(error instanceof Error ? error.message : 'Nastala neočakávaná chyba');
+      setSubmitStatus('error');
+      setTimeout(() => setSubmitStatus('idle'), 5000);
+    }
   };
 
   const handleChange = (field: string, value: string | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
   return (
@@ -98,6 +234,42 @@ export function Contact() {
             transition={{ duration: 0.5 }}
             className="lg:col-span-2"
           >
+            {/* Success Message */}
+            <AnimatePresence>
+              {submitStatus === 'success' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="mb-6 p-4 bg-green-100 border-2 border-green-500 flex items-center gap-3"
+                >
+                  <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-green-800">Dopyt bol úspešne odoslaný!</p>
+                    <p className="text-sm text-green-700">Ďakujeme za váš záujem. Ozveme sa vám čo najskôr.</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Error Message */}
+            <AnimatePresence>
+              {submitStatus === 'error' && errorMessage && (
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  className="mb-6 p-4 bg-red-100 border-2 border-red-500 flex items-center gap-3"
+                >
+                  <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
+                  <div>
+                    <p className="font-bold text-red-800">Chyba pri odosielaní</p>
+                    <p className="text-sm text-red-700">{errorMessage}</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <form onSubmit={handleSubmit} className="brutal-card p-6 md:p-8 bg-white">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Company */}
@@ -108,6 +280,7 @@ export function Contact() {
                   <Input
                     id="company"
                     required
+                    disabled={submitStatus === 'loading'}
                     value={formData.company}
                     onChange={(e) => handleChange("company", e.target.value)}
                     className="brutal-input"
@@ -123,6 +296,7 @@ export function Contact() {
                   <Input
                     id="name"
                     required
+                    disabled={submitStatus === 'loading'}
                     value={formData.name}
                     onChange={(e) => handleChange("name", e.target.value)}
                     className="brutal-input"
@@ -139,6 +313,7 @@ export function Contact() {
                     id="email"
                     type="email"
                     required
+                    disabled={submitStatus === 'loading'}
                     value={formData.email}
                     onChange={(e) => handleChange("email", e.target.value)}
                     className="brutal-input"
@@ -154,6 +329,7 @@ export function Contact() {
                   <Input
                     id="phone"
                     type="tel"
+                    disabled={submitStatus === 'loading'}
                     value={formData.phone}
                     onChange={(e) => handleChange("phone", e.target.value)}
                     className="brutal-input"
@@ -169,6 +345,7 @@ export function Contact() {
                   <Select
                     value={formData.productType}
                     onValueChange={(value) => handleChange("productType", value)}
+                    disabled={submitStatus === 'loading'}
                   >
                     <SelectTrigger className="brutal-input">
                       <SelectValue placeholder="Vyberte kategóriu..." />
@@ -192,6 +369,7 @@ export function Contact() {
                     id="message"
                     required
                     rows={5}
+                    disabled={submitStatus === 'loading'}
                     value={formData.message}
                     onChange={(e) => handleChange("message", e.target.value)}
                     className="brutal-input resize-none"
@@ -199,20 +377,65 @@ export function Contact() {
                   />
                 </div>
 
-                {/* File Upload Placeholder */}
+                {/* File Upload */}
                 <div className="md:col-span-2">
                   <Label className="font-bold uppercase text-sm mb-2 block">
                     Príloha (výkres, fotka)
                   </Label>
-                  <div className="border-2 border-dashed border-gray-300 p-6 text-center hover:border-orange-500 transition-colors cursor-pointer">
-                    <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-                    <p className="text-sm text-gray-500">
-                      Kliknutím alebo pretiahnutím nahrajte súbor
-                    </p>
-                    <p className="text-xs text-gray-400 mt-1">
-                      PDF, DWG, JPG, PNG (max. 10MB)
-                    </p>
-                  </div>
+                  
+                  {file ? (
+                    // File selected - show file info
+                    <div className="border-2 border-green-500 bg-green-50 p-4 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <FileText className="w-8 h-8 text-green-600" />
+                        <div>
+                          <p className="font-medium text-green-800">{file.name}</p>
+                          <p className="text-sm text-green-600">{formatFileSize(file.size)}</p>
+                        </div>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={removeFile}
+                        disabled={submitStatus === 'loading'}
+                        className="p-2 hover:bg-green-200 rounded transition-colors"
+                        aria-label="Odstrániť súbor"
+                      >
+                        <X className="w-5 h-5 text-green-700" />
+                      </button>
+                    </div>
+                  ) : (
+                    // No file - show upload area
+                    <div
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                      onClick={() => fileInputRef.current?.click()}
+                      className={`
+                        border-2 border-dashed p-6 text-center transition-colors cursor-pointer
+                        ${isDragging 
+                          ? 'border-orange-500 bg-orange-50' 
+                          : 'border-gray-300 hover:border-orange-500'
+                        }
+                        ${submitStatus === 'loading' ? 'opacity-50 cursor-not-allowed' : ''}
+                      `}
+                    >
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        onChange={handleFileInputChange}
+                        accept=".pdf,.dwg,.jpg,.jpeg,.png,.webp"
+                        className="hidden"
+                        disabled={submitStatus === 'loading'}
+                      />
+                      <Upload className={`w-8 h-8 mx-auto mb-2 ${isDragging ? 'text-orange-500' : 'text-gray-400'}`} />
+                      <p className="text-sm text-gray-500">
+                        {isDragging ? 'Pustite súbor tu' : 'Kliknutím alebo pretiahnutím nahrajte súbor'}
+                      </p>
+                      <p className="text-xs text-gray-400 mt-1">
+                        PDF, DWG, JPG, PNG (max. 10MB)
+                      </p>
+                    </div>
+                  )}
                 </div>
 
                 {/* GDPR Consent */}
@@ -223,6 +446,7 @@ export function Contact() {
                       checked={formData.gdprConsent}
                       onCheckedChange={(checked) => handleChange("gdprConsent", checked as boolean)}
                       className="mt-1"
+                      disabled={submitStatus === 'loading'}
                       required
                     />
                     <Label htmlFor="gdprConsent" className="text-sm text-gray-600 cursor-pointer">
@@ -240,10 +464,20 @@ export function Contact() {
                 <div className="md:col-span-2">
                   <button
                     type="submit"
-                    className="brutal-btn w-full flex items-center justify-center gap-2"
+                    disabled={submitStatus === 'loading'}
+                    className="brutal-btn w-full flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    <Send size={18} />
-                    Odoslať dopyt
+                    {submitStatus === 'loading' ? (
+                      <>
+                        <Loader2 size={18} className="animate-spin" />
+                        Odosiela sa...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={18} />
+                        Odoslať dopyt
+                      </>
+                    )}
                   </button>
                 </div>
               </div>

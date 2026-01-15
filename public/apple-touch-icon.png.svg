@@ -1,0 +1,25 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- White background for iOS -->
+  <rect width="180" height="180" rx="40" fill="#FFFFFF"/>
+  
+  <!-- Centered logo with padding -->
+  <g transform="translate(30, 30)">
+    <!-- Background shape -->
+    <rect x="10" y="10" width="100" height="100" rx="20" fill="#1a1a1a"/>
+    
+    <!-- Stylized "24" -->
+    <g fill="#FFFFFF">
+      <!-- Number 2 -->
+      <path d="M30 38C30 34.6863 32.6863 32 36 32H42C47.5228 32 52 36.4772 52 42C52 45.1046 50.5255 47.8663 48.2426 49.5858L36 60H52V66H30V60.2426L46.5 46.5C47.8807 45.3431 49 43.3137 49 42C49 38.134 45.866 35 42 35H36C34.3431 35 33 36.3431 33 38V42H30V38Z"/>
+      
+      <!-- Number 4 -->
+      <path d="M70 32V60H76V32H82V60H86V66H82V72H76V66H62V60.5L70 32ZM70 60V42L64 60H70Z"/>
+    </g>
+    
+    <!-- Rubber profile accent -->
+    <rect x="25" y="90" width="70" height="6" rx="3" fill="#E63946"/>
+    
+    <!-- Small text -->
+    <text x="60" y="108" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#1a1a1a" text-anchor="middle">RUBBER</text>
+  </g>
+</svg>

@@ -4,6 +4,7 @@ export { Services } from "./services";
 export { Industries } from "./industries";
 export { Process } from "./process";
 export { Quality } from "./quality";
+export { Laboratory } from "./laboratory";
 export { Gallery } from "./gallery";
 export { FAQ } from "./faq";
 export { Contact } from "./contact";
