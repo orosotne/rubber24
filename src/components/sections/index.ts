@@ -1,0 +1,9 @@
+export { Hero } from "./hero";
+export { About } from "./about";
+export { Services } from "./services";
+export { Industries } from "./industries";
+export { Process } from "./process";
+export { Quality } from "./quality";
+export { Gallery } from "./gallery";
+export { FAQ } from "./faq";
+export { Contact } from "./contact";

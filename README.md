@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RUBBER 24 - Landing Page
 
-## Getting Started
+Profesionálna B2B landing page pre RUBBER 24 s.r.o. - slovenského výrobcu gumových komponentov na mieru.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **Framework**: Next.js 14 (App Router)
+- **Styling**: Tailwind CSS 4.x
+- **UI Komponenty**: shadcn/ui
+- **Animácie**: Framer Motion
+- **Font**: Inter
+- **Ikony**: Lucide React
+
+## Štruktúra projektu
+
+```
+src/
+├── app/
+│   ├── globals.css      # Tailwind + custom styles
+│   ├── layout.tsx       # Root layout + SEO metadata
+│   └── page.tsx         # Hlavná stránka
+│
+├── components/
+│   ├── layout/          # Navbar, Footer
+│   ├── sections/        # Všetky sekcie stránky
+│   ├── shared/          # Zdieľané komponenty
+│   └── ui/              # shadcn/ui komponenty
+│
+└── lib/
+    └── utils.ts         # Utility funkcie
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Sekcie stránky
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Hero** - Hlavný banner s H1, benefitmi a CTA
+2. **O nás** - História firmy a produktové kategórie
+3. **Služby** - 6 kariet so službami
+4. **Odvetvia** - Pre koho pracujeme
+5. **Proces** - 4 kroky spolupráce
+6. **Kvalita** - Kontrola kvality a certifikácie
+7. **Galéria** - Ukážky produktov
+8. **FAQ** - Časté otázky
+9. **Kontakt** - Lead formulár + kontaktné údaje
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Inštalácia a spustenie
 
-## Learn More
+```bash
+# Inštalácia závislostí
+npm install
 
-To learn more about Next.js, take a look at the following resources:
+# Development server
+npm run dev
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Production build
+npm run build
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Spustenie production buildu
+npm start
+```
 
-## Deploy on Vercel
+## Dizajnový systém
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Farby
+- **Primary**: Oranžová (#F97316)
+- **Background**: Biela, Svetlo šedá (#F8FAFC)
+- **Text**: Čierna (#000000)
+- **Border**: Čierna (3-4px)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Neo-brutalistický štýl
+- Hard shadows (8px 8px 0px #000)
+- Čierne okraje
+- Uppercase headings
+- Výrazná typografia
+
+## Customizácia
+
+### Kontaktné údaje
+Aktualizujte kontaktné údaje v:
+- `src/components/layout/footer.tsx`
+- `src/components/sections/contact.tsx`
+
+### Obrázky
+Placeholder obrázky z Unsplash nahraďte vlastnými v:
+- `src/components/sections/hero.tsx`
+- `src/components/sections/about.tsx`
+- `src/components/sections/gallery.tsx`
+
+### SEO Metadata
+Upravte v `src/app/layout.tsx`:
+- title
+- description
+- OpenGraph data
+
+## Firemné údaje
+
+- **Firma**: RUBBER 24, s.r.o.
+- **IČO**: 50157370
+- **DIČ**: 2120211533
+- **IČ DPH**: SK2120211533
+- **Sídlo**: Remenárska 1220, 956 18 Bošany
+
+## Licencia
+
+Súkromný projekt pre RUBBER 24 s.r.o.
