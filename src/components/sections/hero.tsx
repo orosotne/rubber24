@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Cog, Factory, Headphones, ArrowRight, FileText } from "lucide-react";
+import { Cog, Factory, Headphones, ArrowRight, FileText, FlaskConical } from "lucide-react";
 
 const benefits = [
   {
@@ -59,7 +59,15 @@ export function Hero() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <span className="brutal-tag mb-6">Od roku 2016</span>
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 border-2 border-black text-white mb-6"
+            >
+              <FlaskConical className="w-5 h-5 text-orange-500" />
+              <span className="text-sm font-bold uppercase">SK CRIS certifikovaný</span>
+            </motion.div>
             
             <h1 className="heading-xl mb-6">
               Výskum a vývoj
@@ -101,11 +109,11 @@ export function Hero() {
               transition={{ duration: 0.4, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Link href="#kontakt" className="brutal-btn flex items-center justify-center gap-2">
+              <Link href="/kontakt" className="brutal-btn flex items-center justify-center gap-2">
                 Požiadať o konzultáciu
                 <ArrowRight size={18} />
               </Link>
-              <Link href="#kontakt" className="brutal-btn-outline flex items-center justify-center gap-2">
+              <Link href="/kontakt" className="brutal-btn-outline flex items-center justify-center gap-2">
                 <FileText size={18} />
                 Poslať zadanie
               </Link>

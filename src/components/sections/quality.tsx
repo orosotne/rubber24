@@ -13,24 +13,25 @@ import {
   Award,
   ScanSearch,
   ClipboardCheck,
-  PackageCheck
+  PackageCheck,
+  FlaskConical
 } from "lucide-react";
 
 const qualityPoints = [
   {
     icon: Ruler,
-    title: "Kontrola rozmerov",
-    description: "Každý diel kontrolujeme na dodržanie predpísaných rozmerov a tolerancií.",
+    title: "Presné parametre",
+    description: "Každú zmes kontrolujeme na dodržanie predpísaných vlastností a tolerancií.",
   },
   {
     icon: RefreshCw,
     title: "Opakovateľnosť",
-    description: "Garantujeme rovnakú kvalitu v každej vyrobenej sérii.",
+    description: "Garantujeme rovnaké vlastnosti materiálu v každej vyrobenej šarži.",
   },
   {
     icon: FileCheck,
     title: "Dokumentácia",
-    description: "Vedieme záznamy o výrobe a kontrole pre spätnú dohľadateľnosť.",
+    description: "Vedieme záznamy o vývoji a testovaní pre spätnú dohľadateľnosť.",
   },
 ];
 
@@ -42,13 +43,13 @@ const qualityStandards = [
   },
   {
     icon: ClipboardCheck,
-    title: "Medzioperačná kontrola",
-    description: "Sledovanie kvality počas celého výrobného procesu.",
+    title: "Priebežné testovanie",
+    description: "Sledovanie vlastností zmesi počas celého vývoja.",
   },
   {
     icon: PackageCheck,
     title: "Výstupná kontrola",
-    description: "Kontrola každého produktu pred expedíciou.",
+    description: "Overenie finálnych parametrov pred odovzdaním receptúry.",
   },
 ];
 
@@ -56,12 +57,12 @@ const whyUs = [
   {
     icon: Calendar,
     title: "Skúsenosti od 2016",
-    description: "Roky praxe v oblasti gumárenskej výroby.",
+    description: "Roky praxe vo vývoji gumových zmesí.",
   },
   {
     icon: Zap,
-    title: "Výrobné know-how",
-    description: "Technické znalosti a osvedčené postupy.",
+    title: "R&D know-how",
+    description: "Certifikovaná spôsobilosť na výskum a vývoj.",
   },
   {
     icon: RefreshCw,
@@ -82,12 +83,12 @@ const whyUs = [
 
 export function Quality() {
   return (
-    <section id="kvalita" className="section-gray py-16 md:py-24">
+    <section className="section-gray py-16 md:py-24">
       <div className="container-custom">
         <SectionHeader
           tag="Kvalita"
           title="Kvalita a dôvera"
-          description="Kladieme dôraz na stabilnú kvalitu každého vyrobeného dielu. Naše procesy sú nastavené tak, aby zabezpečili spoľahlivé výsledky."
+          description="Kladieme dôraz na stabilnú kvalitu každej vyvinutej zmesi. Naše procesy sú nastavené tak, aby zabezpečili spoľahlivé výsledky."
           centered
         />
 
@@ -115,9 +116,9 @@ export function Quality() {
 
         {/* Certifications */}
         <div className="mb-16">
-          <h3 className="heading-md mb-8 text-center">Certifikácie a štandardy</h3>
+          <h3 className="heading-md mb-8 text-center">Certifikácie a oprávnenia</h3>
           
-          {/* ISO 9001 - Featured */}
+          {/* SK CRIS - Featured */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -128,19 +129,51 @@ export function Quality() {
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="flex-shrink-0">
                 <div className="w-20 h-20 bg-orange-500 border-2 border-black flex items-center justify-center">
-                  <Award className="w-10 h-10 text-black" />
+                  <FlaskConical className="w-10 h-10 text-black" />
                 </div>
               </div>
               <div className="text-center md:text-left flex-1">
-                <h4 className="text-2xl md:text-3xl font-bold uppercase tracking-tight mb-2">
+                <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mb-2">
+                  <h4 className="text-2xl md:text-3xl font-bold uppercase tracking-tight break-words">
+                    SK CRIS
+                  </h4>
+                  <span className="px-2 py-1 bg-green-500 text-black text-xs font-bold uppercase">
+                    Schválený
+                  </span>
+                </div>
+                <p className="text-gray-300 text-lg">
+                  Certifikát spôsobilosti vykonávať výskum a vývoj
+                </p>
+                <div className="mt-3 space-y-1 text-sm text-gray-400">
+                  <p><strong className="text-white">Číslo certifikátu:</strong> 2021/11989:1-D1230</p>
+                  <p><strong className="text-white">Platnosť:</strong> 19.03.2021 – 18.03.2027</p>
+                  <p><strong className="text-white">Odbor:</strong> Technické vedy / Ostatné odbory technických vied</p>
+                  <p><strong className="text-white">SK NACE:</strong> Výroba ostatných výrobkov z gumy</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ISO 9001 */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="brutal-card p-6 md:p-8 bg-white mb-6"
+          >
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <div className="flex-shrink-0">
+                <div className="w-16 h-16 bg-orange-500 border-2 border-black flex items-center justify-center">
+                  <Award className="w-8 h-8 text-black" />
+                </div>
+              </div>
+              <div className="text-center md:text-left flex-1">
+                <h4 className="text-xl md:text-2xl font-bold uppercase tracking-tight mb-2 break-words">
                   ISO 9001:2015
                 </h4>
-                <p className="text-gray-300 text-lg">
-                  Certifikovaný systém manažérstva kvality
-                </p>
-                <p className="text-gray-400 mt-2">
-                  Medzinárodne uznávaný štandard pre riadenie kvality vo výrobných procesoch. 
-                  Garantuje konzistentnú kvalitu produktov a neustále zlepšovanie.
+                <p className="text-gray-600">
+                  Certifikovaný systém manažérstva kvality. Medzinárodne uznávaný štandard pre riadenie kvality.
                 </p>
               </div>
             </div>

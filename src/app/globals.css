@@ -174,15 +174,15 @@
   
   /* Typography */
   .heading-xl {
-    @apply text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight leading-none;
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight leading-none break-words;
   }
   
   .heading-lg {
-    @apply text-3xl md:text-4xl font-bold uppercase tracking-tight;
+    @apply text-3xl md:text-4xl font-bold uppercase tracking-tight break-words;
   }
   
   .heading-md {
-    @apply text-xl md:text-2xl font-bold uppercase tracking-tight;
+    @apply text-xl md:text-2xl font-bold uppercase tracking-tight break-words;
   }
   
   /* Container */

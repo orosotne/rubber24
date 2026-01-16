@@ -2,43 +2,43 @@
 
 import { motion } from "framer-motion";
 import { SectionHeader, CtaBanner } from "@/components/shared";
-import { FileText, PenTool, TestTube, Factory, ArrowRight } from "lucide-react";
+import { FileText, PenTool, TestTube, FileCheck, ArrowRight } from "lucide-react";
 
 const steps = [
   {
     number: "01",
     icon: FileText,
     title: "Zadanie požiadavky",
-    description: "Pošlite nám výkres, vzor alebo popíšte vaše požiadavky. Čím viac informácií, tým presnejší návrh.",
+    description: "Popíšte požadované vlastnosti materiálu, aplikáciu a podmienky použitia. Ak máte vzorku na analýzu, pošlite ju.",
   },
   {
     number: "02",
     icon: PenTool,
-    title: "Návrh riešenia",
-    description: "Upresníme parametre, materiál a tolerancie. Navrhneme optimálne riešenie pre vašu aplikáciu.",
+    title: "Návrh receptúry",
+    description: "Analyzujeme požiadavky a navrhneme optimálnu gumovú zmes - materiál, tvrdosť, odolnosti a ďalšie parametre.",
   },
   {
     number: "03",
     icon: TestTube,
-    title: "Prototyp a vzorka",
-    description: "Ak je potrebné, vyrobíme vzorku na overenie funkčnosti. Možnosť úprav pred sériou.",
+    title: "Vzorka a testovanie",
+    description: "Vyrobíme vzorku zmesi na overenie vlastností. Na základe testov a spätnej väzby receptúru doladíme.",
   },
   {
     number: "04",
-    icon: Factory,
-    title: "Sériová výroba",
-    description: "Po schválení spustíme výrobu. Kontrola kvality každej série a dodanie podľa dohody.",
+    icon: FileCheck,
+    title: "Finálna receptúra",
+    description: "Po schválení odovzdáme kompletnú technickú dokumentáciu receptúry pripravenej na výrobu.",
   },
 ];
 
 export function Process() {
   return (
-    <section id="proces" className="section-light py-16 md:py-24">
+    <section className="section-light py-16 md:py-24">
       <div className="container-custom">
         <SectionHeader
           tag="Proces"
           title="Ako spolupracujeme"
-          description="Jasný a transparentný proces od prvého kontaktu po dodanie hotových dielov."
+          description="Jasný a transparentný proces od prvého kontaktu po odovzdanie finálnej receptúry."
           centered
         />
 
@@ -86,11 +86,11 @@ export function Process() {
           description="Pošlite nám zadanie a my sa ozveme s návrhom postupu."
           primaryCta={{
             text: "Poslať dopyt",
-            href: "#kontakt",
+            href: "/kontakt",
           }}
           secondaryCta={{
             text: "Volať",
-            href: "tel:+421000000000",
+            href: "tel:+421917588737",
           }}
           variant="orange"
         />

@@ -2,6 +2,52 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 
+// reCAPTCHA configuration
+const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY
+const RECAPTCHA_SCORE_THRESHOLD = 0.5 // Reject requests with score below this
+
+// Verify reCAPTCHA token with Google
+async function verifyRecaptcha(token: string): Promise<{ success: boolean; score?: number; error?: string }> {
+  if (!RECAPTCHA_SECRET_KEY) {
+    console.warn('reCAPTCHA secret key not configured, skipping verification')
+    return { success: true } // Skip verification if not configured
+  }
+
+  if (!token) {
+    return { success: false, error: 'reCAPTCHA token missing' }
+  }
+
+  try {
+    const response = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams({
+        secret: RECAPTCHA_SECRET_KEY,
+        response: token,
+      }),
+    })
+
+    const data = await response.json()
+
+    if (!data.success) {
+      return { success: false, error: 'reCAPTCHA verification failed' }
+    }
+
+    // For reCAPTCHA v3, check the score
+    if (data.score !== undefined && data.score < RECAPTCHA_SCORE_THRESHOLD) {
+      console.log(`reCAPTCHA score too low: ${data.score}`)
+      return { success: false, score: data.score, error: 'Suspicious activity detected' }
+    }
+
+    return { success: true, score: data.score }
+  } catch (error) {
+    console.error('reCAPTCHA verification error:', error)
+    return { success: false, error: 'reCAPTCHA verification error' }
+  }
+}
+
 // Server-side Supabase client
 const supabaseAdmin = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -54,6 +100,17 @@ export async function POST(request: NextRequest) {
     const productType = formData.get('productType') as string || null
     const message = formData.get('message') as string
     const gdprConsent = formData.get('gdprConsent') === 'true'
+    const recaptchaToken = formData.get('recaptchaToken') as string || ''
+
+    // Verify reCAPTCHA token (bot protection)
+    const recaptchaResult = await verifyRecaptcha(recaptchaToken)
+    if (!recaptchaResult.success) {
+      console.log('reCAPTCHA verification failed:', recaptchaResult.error)
+      return NextResponse.json(
+        { error: 'Overenie zlyhalo. Skúste to prosím znova.' },
+        { status: 403 }
+      )
+    }
 
     // Validácia povinných polí
     if (!company || !name || !email || !message) {
@@ -263,7 +320,7 @@ export async function POST(request: NextRequest) {
             <div class="container">
               <div class="header">
                 <h1>RUBBER 24</h1>
-                <p style="margin: 10px 0 0 0; font-size: 12px; color: #ccc;">Výroba gumových výrobkov na mieru</p>
+                <p style="margin: 10px 0 0 0; font-size: 12px; color: #ccc;">Vývoj gumových zmesí a receptúr na mieru</p>
               </div>
               
               <div class="content">

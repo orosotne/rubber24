@@ -1,0 +1,51 @@
+# robots.txt pre RUBBER 24
+# https://rubber24.sk
+
+# Povolit vsetky vyhladavace
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Google Bot
+User-agent: Googlebot
+Allow: /
+
+# Bing Bot
+User-agent: Bingbot
+Allow: /
+
+# AI Crawlery - OpenAI
+User-agent: GPTBot
+Allow: /
+
+# AI Crawlery - Google AI
+User-agent: Google-Extended
+Allow: /
+
+# AI Crawlery - Anthropic Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+
+# AI Crawlery - Perplexity
+User-agent: PerplexityBot
+Allow: /
+
+# AI Crawlery - Common Crawl (pouzivane mnohymi AI)
+User-agent: CCBot
+Allow: /
+
+# AI Crawlery - Cohere
+User-agent: cohere-ai
+Allow: /
+
+# AI Crawlery - Meta
+User-agent: FacebookBot
+Allow: /
+
+# Sitemap
+Sitemap: https://rubber24.sk/sitemap.xml
+
+# LLMs.txt pre AI systemy
+# https://rubber24.sk/llms.txt

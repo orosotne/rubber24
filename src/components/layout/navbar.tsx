@@ -2,21 +2,25 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
-  { href: "#sluzby", label: "Služby" },
-  { href: "#produkty", label: "Produkty" },
-  { href: "#proces", label: "Proces" },
-  { href: "#kvalita", label: "Kvalita" },
-  { href: "#laboratorium", label: "Laboratórium" },
-  { href: "#o-nas", label: "O nás" },
-  { href: "#kontakt", label: "Kontakt" },
+  { href: "/o-nas", label: "O nás" },
+  { href: "/produkty", label: "Produkty" },
+  { href: "/proces", label: "Proces" },
+  { href: "/kontakt", label: "Kontakt" },
 ];
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b-3 border-black">
@@ -35,7 +39,11 @@ export function Navbar() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="font-bold uppercase text-sm tracking-wide hover:text-orange-500 transition-colors"
+                className={`font-bold uppercase text-sm tracking-wide transition-colors ${
+                  isActive(item.href) 
+                    ? "text-orange-500" 
+                    : "hover:text-orange-500"
+                }`}
               >
                 {item.label}
               </Link>
@@ -44,7 +52,7 @@ export function Navbar() {
 
           {/* CTA Button - Desktop */}
           <div className="hidden lg:block">
-            <Link href="#kontakt" className="brutal-btn text-sm">
+            <Link href="/kontakt" className="brutal-btn text-sm">
               Dopyt
             </Link>
           </div>
@@ -76,13 +84,17 @@ export function Navbar() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setIsOpen(false)}
-                    className="font-bold uppercase text-lg tracking-wide hover:text-orange-500 transition-colors py-2 border-b border-gray-200"
+                    className={`font-bold uppercase text-lg tracking-wide transition-colors py-2 border-b border-gray-200 ${
+                      isActive(item.href) 
+                        ? "text-orange-500" 
+                        : "hover:text-orange-500"
+                    }`}
                   >
                     {item.label}
                   </Link>
                 ))}
                 <Link
-                  href="#kontakt"
+                  href="/kontakt"
                   onClick={() => setIsOpen(false)}
                   className="brutal-btn text-center mt-4"
                 >

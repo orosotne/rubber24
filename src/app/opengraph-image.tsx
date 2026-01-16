@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = 'RUBBER 24 - Vývoj a výroba gumových komponentov na mieru';
+export const alt = 'RUBBER 24 - Vývoj gumových zmesí a receptúr na mieru';
 export const size = {
   width: 1200,
   height: 630,
@@ -110,7 +110,7 @@ export default async function Image() {
               display: 'flex',
             }}
           >
-            Vývoj a výroba gumových komponentov na mieru
+            Vývoj gumových zmesí a receptúr na mieru
           </div>
           <div
             style={{

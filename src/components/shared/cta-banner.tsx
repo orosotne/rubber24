@@ -40,7 +40,7 @@ export function CtaBanner({
     >
       <div className="flex flex-col md:flex-row items-center justify-between gap-6">
         <div className={`text-center md:text-left ${isOrange ? "text-black" : "text-white"}`}>
-          <h3 className="text-2xl md:text-3xl font-bold uppercase mb-2">{title}</h3>
+          <h3 className="text-2xl md:text-3xl font-bold uppercase mb-2 break-words">{title}</h3>
           {description && (
             <p className={`text-lg ${isOrange ? "text-black/80" : "text-gray-300"}`}>
               {description}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SectionHeader } from "@/components/shared";
 import { Input } from "@/components/ui/input";
@@ -27,48 +27,41 @@ import {
   X,
   FileText
 } from "lucide-react";
-
-const productTypes = [
-  { value: "naraznik", label: "Nárazníky na lode" },
-  { value: "rohoz", label: "Autorohože" },
-  { value: "zasterka", label: "Zásterky na nákladné autá" },
-  { value: "tesnenie", label: "Tesnenia" },
-  { value: "tlmic", label: "Tlmiče vibrácií" },
-  { value: "ine", label: "Iné" },
-];
+import { companyInfo, productTypes } from "@/lib/data";
 
 const contactInfo = [
   {
     icon: MapPin,
     title: "Adresa",
-    content: ["Remenárska 1220", "956 18 Bošany", "Slovensko"],
+    content: [companyInfo.address.street, `${companyInfo.address.zip} ${companyInfo.address.city}`, companyInfo.address.country],
   },
   {
     icon: Mail,
     title: "Email",
-    content: ["info@rubber24.sk"],
-    href: "mailto:info@rubber24.sk",
+    content: [companyInfo.contact.email],
+    href: `mailto:${companyInfo.contact.email}`,
   },
   {
     icon: Phone,
     title: "Telefón",
-    content: ["+421 917 588 737"],
-    href: "tel:+421917588737",
+    content: [companyInfo.contact.phone],
+    href: `tel:${companyInfo.contact.phone.replace(/\s/g, '')}`,
   },
   {
     icon: Clock,
     title: "Pracovná doba",
-    content: ["Po - Pi: 8:00 - 16:00"],
+    content: [companyInfo.workingHours],
   },
 ];
 
-// Max file size: 10MB
 const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ALLOWED_EXTENSIONS = ['pdf', 'dwg', 'jpg', 'jpeg', 'png', 'webp'];
+const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 
 type SubmitStatus = 'idle' | 'loading' | 'success' | 'error';
 
 export function Contact() {
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
   const [formData, setFormData] = useState({
     company: "",
     name: "",
@@ -83,6 +76,21 @@ export function Contact() {
   const [submitStatus, setSubmitStatus] = useState<SubmitStatus>('idle');
   const [errorMessage, setErrorMessage] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!RECAPTCHA_SITE_KEY) return;
+    if (window.grecaptcha) {
+      setRecaptchaLoaded(true);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+    script.async = true;
+    script.onload = () => {
+      window.grecaptcha.ready(() => setRecaptchaLoaded(true));
+    };
+    document.head.appendChild(script);
+  }, []);
 
   const resetForm = () => {
     setFormData({
@@ -134,23 +142,17 @@ export function Contact() {
     e.preventDefault();
     setIsDragging(false);
     const droppedFile = e.dataTransfer.files[0];
-    if (droppedFile) {
-      handleFileSelect(droppedFile);
-    }
+    if (droppedFile) handleFileSelect(droppedFile);
   };
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    if (selectedFile) {
-      handleFileSelect(selectedFile);
-    }
+    if (selectedFile) handleFileSelect(selectedFile);
   };
 
   const removeFile = () => {
     setFile(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -167,6 +169,15 @@ export function Contact() {
     setErrorMessage("");
 
     try {
+      let recaptchaToken = '';
+      if (RECAPTCHA_SITE_KEY && recaptchaLoaded && window.grecaptcha) {
+        try {
+          recaptchaToken = await window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'submit_inquiry' });
+        } catch {
+          // Continue without token
+        }
+      }
+
       const submitData = new FormData();
       submitData.append('company', formData.company);
       submitData.append('name', formData.name);
@@ -175,10 +186,9 @@ export function Contact() {
       submitData.append('productType', formData.productType);
       submitData.append('message', formData.message);
       submitData.append('gdprConsent', String(formData.gdprConsent));
+      submitData.append('recaptchaToken', recaptchaToken);
       
-      if (file) {
-        submitData.append('attachment', file);
-      }
+      if (file) submitData.append('attachment', file);
 
       const response = await fetch('/api/inquiry', {
         method: 'POST',
@@ -193,8 +203,6 @@ export function Contact() {
 
       setSubmitStatus('success');
       resetForm();
-      
-      // Reset success status after 10 seconds
       setTimeout(() => setSubmitStatus('idle'), 10000);
       
     } catch (error) {
@@ -216,7 +224,7 @@ export function Contact() {
   };
 
   return (
-    <section id="kontakt" className="section-gray py-16 md:py-24">
+    <section className="section-gray py-16 md:py-24">
       <div className="container-custom">
         <SectionHeader
           tag="Kontakt"
@@ -234,7 +242,6 @@ export function Contact() {
             transition={{ duration: 0.5 }}
             className="lg:col-span-2"
           >
-            {/* Success Message */}
             <AnimatePresence>
               {submitStatus === 'success' && (
                 <motion.div
@@ -252,7 +259,6 @@ export function Contact() {
               )}
             </AnimatePresence>
 
-            {/* Error Message */}
             <AnimatePresence>
               {submitStatus === 'error' && errorMessage && (
                 <motion.div
@@ -272,7 +278,6 @@ export function Contact() {
 
             <form onSubmit={handleSubmit} className="brutal-card p-6 md:p-8 bg-white">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Company */}
                 <div>
                   <Label htmlFor="company" className="font-bold uppercase text-sm mb-2 block">
                     Firma *
@@ -288,7 +293,6 @@ export function Contact() {
                   />
                 </div>
 
-                {/* Name */}
                 <div>
                   <Label htmlFor="name" className="font-bold uppercase text-sm mb-2 block">
                     Meno *
@@ -304,7 +308,6 @@ export function Contact() {
                   />
                 </div>
 
-                {/* Email */}
                 <div>
                   <Label htmlFor="email" className="font-bold uppercase text-sm mb-2 block">
                     Email *
@@ -321,7 +324,6 @@ export function Contact() {
                   />
                 </div>
 
-                {/* Phone */}
                 <div>
                   <Label htmlFor="phone" className="font-bold uppercase text-sm mb-2 block">
                     Telefón
@@ -337,10 +339,9 @@ export function Contact() {
                   />
                 </div>
 
-                {/* Product Type */}
                 <div className="md:col-span-2">
                   <Label htmlFor="productType" className="font-bold uppercase text-sm mb-2 block">
-                    Typ produktu
+                    Typ služby
                   </Label>
                   <Select
                     value={formData.productType}
@@ -360,7 +361,6 @@ export function Contact() {
                   </Select>
                 </div>
 
-                {/* Message */}
                 <div className="md:col-span-2">
                   <Label htmlFor="message" className="font-bold uppercase text-sm mb-2 block">
                     Popis požiadavky *
@@ -373,23 +373,21 @@ export function Contact() {
                     value={formData.message}
                     onChange={(e) => handleChange("message", e.target.value)}
                     className="brutal-input resize-none"
-                    placeholder="Popíšte váš projekt, rozmery, množstvo, materiál..."
+                    placeholder="Popíšte váš projekt, požadované vlastnosti materiálu, aplikáciu..."
                   />
                 </div>
 
-                {/* File Upload */}
                 <div className="md:col-span-2">
                   <Label className="font-bold uppercase text-sm mb-2 block">
-                    Príloha (výkres, fotka)
+                    Príloha (výkres, špecifikácia)
                   </Label>
                   
                   {file ? (
-                    // File selected - show file info
                     <div className="border-2 border-green-500 bg-green-50 p-4 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <FileText className="w-8 h-8 text-green-600" />
                         <div>
-                          <p className="font-medium text-green-800">{file.name}</p>
+                          <p className="font-medium text-green-800 truncate max-w-[200px] sm:max-w-none">{file.name}</p>
                           <p className="text-sm text-green-600">{formatFileSize(file.size)}</p>
                         </div>
                       </div>
@@ -404,7 +402,6 @@ export function Contact() {
                       </button>
                     </div>
                   ) : (
-                    // No file - show upload area
                     <div
                       onDragOver={handleDragOver}
                       onDragLeave={handleDragLeave}
@@ -412,10 +409,7 @@ export function Contact() {
                       onClick={() => fileInputRef.current?.click()}
                       className={`
                         border-2 border-dashed p-6 text-center transition-colors cursor-pointer
-                        ${isDragging 
-                          ? 'border-orange-500 bg-orange-50' 
-                          : 'border-gray-300 hover:border-orange-500'
-                        }
+                        ${isDragging ? 'border-orange-500 bg-orange-50' : 'border-gray-300 hover:border-orange-500'}
                         ${submitStatus === 'loading' ? 'opacity-50 cursor-not-allowed' : ''}
                       `}
                     >
@@ -438,7 +432,6 @@ export function Contact() {
                   )}
                 </div>
 
-                {/* GDPR Consent */}
                 <div className="md:col-span-2">
                   <div className="flex items-start gap-3">
                     <Checkbox
@@ -460,7 +453,6 @@ export function Contact() {
                   </div>
                 </div>
 
-                {/* Submit */}
                 <div className="md:col-span-2">
                   <button
                     type="submit"
@@ -493,10 +485,7 @@ export function Contact() {
             className="space-y-6"
           >
             {contactInfo.map((info) => (
-              <div
-                key={info.title}
-                className="brutal-card-sm p-6 bg-white"
-              >
+              <div key={info.title} className="brutal-card-sm p-6 bg-white">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-orange-500 border-2 border-black">
                     <info.icon className="w-6 h-6 text-black" />
@@ -506,10 +495,7 @@ export function Contact() {
                     {info.content.map((line, i) => (
                       <p key={i} className="text-gray-600">
                         {info.href && i === 0 ? (
-                          <a
-                            href={info.href}
-                            className="hover:text-orange-500 transition-colors"
-                          >
+                          <a href={info.href} className="hover:text-orange-500 transition-colors">
                             {line}
                           </a>
                         ) : (
@@ -522,23 +508,18 @@ export function Contact() {
               </div>
             ))}
 
-            {/* Company Info */}
             <div className="brutal-card-sm p-6 bg-black text-white">
               <h4 className="font-bold uppercase text-sm mb-3 text-orange-500">
                 Firemné údaje
               </h4>
               <div className="space-y-1 text-sm text-gray-300">
-                <p><strong className="text-white">RUBBER 24, s.r.o.</strong></p>
-                <p>IČO: 50157370</p>
-                <p>DIČ: 2120211533</p>
-                <p>IČ DPH: SK2120211533</p>
-                <p className="text-xs text-gray-500 mt-2">
-                  Registrácia podľa §4, od 1.4.2016
-                </p>
+                <p><strong className="text-white">{companyInfo.name}</strong></p>
+                <p>IČO: {companyInfo.ico}</p>
+                <p>DIČ: {companyInfo.dic}</p>
+                <p>IČ DPH: {companyInfo.icDph}</p>
               </div>
             </div>
 
-            {/* Response Time */}
             <div className="p-4 bg-orange-100 border-2 border-orange-500">
               <p className="text-sm font-medium text-orange-800">
                 Odpovedáme spravidla do 1 pracovného dňa.

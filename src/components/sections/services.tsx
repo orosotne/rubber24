@@ -5,8 +5,8 @@ import { SectionHeader } from "@/components/shared";
 import { 
   Lightbulb, 
   FlaskConical, 
-  Factory, 
-  Copy, 
+  Beaker, 
+  FileSearch, 
   MessageSquare,
   Wrench
 } from "lucide-react";
@@ -14,50 +14,50 @@ import {
 const services = [
   {
     icon: Lightbulb,
-    title: "Vývoj riešenia a optimalizácia",
-    description: "Analyzujeme vaše požiadavky a navrhneme optimálne riešenie. Pomôžeme s výberom vhodného materiálu, tvaru a rozmerov pre danú aplikáciu.",
+    title: "Analýza požiadaviek",
+    description: "Analyzujeme vaše technické požiadavky a navrhneme optimálnu receptúru. Pomôžeme s definovaním vlastností materiálu pre danú aplikáciu.",
     accent: false,
   },
   {
     icon: FlaskConical,
-    title: "Prototyp a testovanie",
-    description: "Vyrobíme prototyp alebo vzorku na overenie funkčnosti pred sériovou výrobou. Možnosť úprav na základe spätnej väzby.",
+    title: "Vývoj receptúry",
+    description: "Vytvoríme gumovú zmes s presne definovanými vlastnosťami - tvrdosť, elasticita, chemická a tepelná odolnosť podľa vašich špecifikácií.",
     accent: true,
   },
   {
-    icon: Factory,
-    title: "Výroba na mieru",
-    description: "Realizujeme zákazky od kusovej výroby až po veľké série. Každý diel vyrábame podľa vašich presných špecifikácií a tolerancií.",
+    icon: Beaker,
+    title: "Prototyp a testovanie",
+    description: "Vyrobíme vzorku na overenie vlastností materiálu. Možnosť úprav receptúry na základe testov a spätnej väzby.",
     accent: false,
   },
   {
-    icon: Copy,
-    title: "Náhrada a výroba podľa vzoru",
-    description: "Dokážeme vytvoriť gumový diel podľa existujúceho vzoru alebo nahradiť opotrebovaný komponent. Reverzné inžinierstvo pre nedostupné diely.",
+    icon: FileSearch,
+    title: "Reverzné inžinierstvo",
+    description: "Dokážeme analyzovať existujúci materiál a vytvoriť jeho ekvivalent alebo vylepšenú verziu podľa vašich potrieb.",
     accent: false,
   },
   {
     icon: MessageSquare,
     title: "Konzultácia materiálu",
-    description: "Poradíme s výberom materiálu podľa požiadaviek na tvrdosť, odolnosť voči chemikáliám, teplotám či mechanickému namáhaniu.",
+    description: "Poradíme s výberom typu gumy podľa požiadaviek na odolnosť voči chemikáliám, teplotám či mechanickému namáhaniu.",
     accent: true,
   },
   {
     icon: Wrench,
     title: "Technická podpora",
-    description: "Poskytujeme odbornú podporu počas celého procesu spolupráce. Riešime technické otázky a pomáhame s optimalizáciou výroby.",
+    description: "Poskytujeme odbornú podporu počas celého procesu vývoja. Pomáhame s optimalizáciou receptúry pre vašu aplikáciu.",
     accent: false,
   },
 ];
 
 export function Services() {
   return (
-    <section id="sluzby" className="section-gray py-16 md:py-24">
+    <section className="section-gray py-16 md:py-24">
       <div className="container-custom">
         <SectionHeader
           tag="Služby"
           title="Čo pre vás môžeme urobiť"
-          description="Komplexné služby od návrhu až po sériovú výrobu gumových komponentov. Každý projekt riešime individuálne s dôrazom na kvalitu a termíny."
+          description="Komplexné služby od analýzy požiadaviek až po finálnu receptúru. Každý projekt riešime individuálne s dôrazom na presné technické parametre."
           centered
         />
 
@@ -82,7 +82,7 @@ export function Services() {
                   className={`w-7 h-7 ${service.accent ? "text-orange-500" : "text-black"}`}
                 />
               </div>
-              <h3 className="heading-md mb-3">{service.title}</h3>
+              <h3 className="heading-md mb-3 break-words">{service.title}</h3>
               <p className={service.accent ? "text-black/80" : "text-gray-600"}>
                 {service.description}
               </p>

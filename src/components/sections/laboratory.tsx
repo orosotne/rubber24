@@ -69,7 +69,7 @@ const labCapabilities = [
 
 export function Laboratory() {
   return (
-    <section id="laboratorium" className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-white">
       <div className="container-custom">
         <SectionHeader
           tag="Laboratórium"
@@ -96,7 +96,7 @@ export function Laboratory() {
                     <equipment.icon className="w-8 h-8 text-black" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="heading-md mb-2 text-white">{equipment.title}</h3>
+                    <h3 className="heading-md mb-2 text-white break-words">{equipment.title}</h3>
                     <p className="text-gray-300 mb-4">{equipment.description}</p>
                     <div className="flex flex-wrap gap-2">
                       {equipment.specs.map((spec) => (

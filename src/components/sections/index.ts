@@ -1,10 +1,11 @@
 export { Hero } from "./hero";
-export { About } from "./about";
+export { AboutInfo } from "./about-info";
 export { Services } from "./services";
 export { Industries } from "./industries";
 export { Process } from "./process";
 export { Quality } from "./quality";
 export { Laboratory } from "./laboratory";
 export { Gallery } from "./gallery";
+export { ProductCategories } from "./product-categories";
 export { FAQ } from "./faq";
 export { Contact } from "./contact";

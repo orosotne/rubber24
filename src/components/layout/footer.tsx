@@ -1,12 +1,11 @@
 import Link from "next/link";
+import { FlaskConical } from "lucide-react";
 
 const quickLinks = [
-  { href: "#sluzby", label: "Služby" },
-  { href: "#produkty", label: "Produkty" },
-  { href: "#proces", label: "Proces" },
-  { href: "#kvalita", label: "Kvalita" },
-  { href: "#laboratorium", label: "Laboratórium" },
-  { href: "#kontakt", label: "Kontakt" },
+  { href: "/o-nas", label: "O nás" },
+  { href: "/produkty", label: "Riešenia" },
+  { href: "/proces", label: "Proces" },
+  { href: "/kontakt", label: "Kontakt" },
 ];
 
 const legalLinks = [
@@ -28,9 +27,19 @@ export function Footer() {
               RUBBER 24
             </div>
             <p className="text-gray-300 mb-4 max-w-md">
-              Slovenský výrobca gumových komponentov na mieru. Od roku 2016 dodávame 
-              riešenia pre priemysel, automotive a námorné aplikácie.
+              Špecializujeme sa na vývoj gumových zmesí a receptúr na mieru. Od roku 2016 
+              dodávame materiálové riešenia pre priemysel, automotive a námorné aplikácie.
             </p>
+            
+            {/* SK CRIS Badge */}
+            <div className="flex items-center gap-3 mb-4 p-3 bg-slate-900 border border-slate-700 max-w-md">
+              <FlaskConical className="w-6 h-6 text-orange-500 flex-shrink-0" />
+              <div className="text-sm">
+                <p className="text-orange-500 font-bold">SK CRIS certifikovaný</p>
+                <p className="text-gray-400 text-xs">Spôsobilosť vykonávať výskum a vývoj</p>
+              </div>
+            </div>
+
             <div className="text-gray-400 text-sm space-y-1">
               <p>RUBBER 24, s.r.o.</p>
               <p>IČO: 50157370</p>
@@ -74,10 +83,6 @@ export function Footer() {
                 <span className="block text-white font-bold">Email:</span>
                 <a href="mailto:info@rubber24.sk" className="hover:text-orange-500 transition-colors">
                   info@rubber24.sk
-                </a>
-                <br />
-                <a href="mailto:rubber24rubber24@gmail.com" className="hover:text-orange-500 transition-colors">
-                  rubber24rubber24@gmail.com
                 </a>
               </p>
               <p>

@@ -11,32 +11,32 @@ import {
 
 const faqItems = [
   {
-    question: "Čo potrebujete k naceneniu?",
-    answer: "Na prípravu cenovej ponuky potrebujeme čo najviac informácií o požadovanom produkte: technický výkres s rozmermi a toleranciami, požadovaný materiál (tvrdosť, farba), predpokladané množstvo, prípadne vzor existujúceho dielu. Ak nemáte výkres, popíšte čo najpresnejšie vaše požiadavky alebo nám pošlite vzor.",
+    question: "Čo potrebujete na prípravu cenovej ponuky?",
+    answer: "Na prípravu ponuky potrebujeme informácie o požadovaných vlastnostiach materiálu: tvrdosť, chemická odolnosť, tepelná odolnosť, mechanické vlastnosti. Ideálne aj popis aplikácie a podmienok použitia. Ak máte existujúci materiál na analýzu, radi ho preštudujeme.",
   },
   {
-    question: "Robíte aj kusovú výrobu alebo prototypy?",
-    answer: "Áno, vyrábame aj jednotlivé kusy a prototypy. Kusová výroba je vhodná na overenie funkčnosti pred sériovou produkciou alebo pre špecializované aplikácie s nízkym odberom. Cena za kus je vyššia ako pri sériovej výrobe.",
+    question: "Vyvíjate aj malé vzorky alebo prototypy?",
+    answer: "Áno, štandardne začíname vývojom vzorky na overenie vlastností materiálu. Vzorka slúži na testovanie pred finálnym odovzdaním receptúry. Cena vzorky sa líši podľa náročnosti vývoja.",
   },
   {
-    question: "Viete vyrábať podľa vzoru bez výkresu?",
-    answer: "Áno, dokážeme vytvoriť gumový diel podľa existujúceho vzoru. Vzor zameráme a vytvoríme technickú dokumentáciu. Tento postup je vhodný pre náhradné diely alebo keď pôvodná dokumentácia nie je k dispozícii. Pri zložitejších dieloch odporúčame schválenie rozmerov pred výrobou.",
+    question: "Dokážete analyzovať existujúci materiál?",
+    answer: "Áno, dokážeme analyzovať existujúci gumový materiál a vytvoriť jeho ekvivalent alebo vylepšenú verziu. Toto je vhodné keď potrebujete nahradiť materiál od nedostupného dodávateľa alebo chcete zlepšiť jeho vlastnosti.",
   },
   {
     question: "Aké sú typické dodacie lehoty?",
-    answer: "Dodacie lehoty závisia od náročnosti projektu, požadovaného množstva a aktuálneho vyťaženia výroby. Pri štandardných zákazkách sa pohybujeme v rámci týždňov. Presný termín vám potvrdíme po posúdení zadania. Pri urgentných objednávkach sa snažíme vyjsť v ústrety.",
+    answer: "Vývoj receptúry trvá typicky 2-4 týždne v závislosti od náročnosti požiadaviek. Jednoduché modifikácie existujúcich zmesí môžu byť rýchlejšie. Presný termín potvrdíme po posúdení zadania.",
   },
   {
-    question: "Ako prebieha komunikácia a schválenie vzorky?",
-    answer: "Po prijatí objednávky vás kontaktujeme na upresenie detailov. Ak je potrebná vzorka, vyrobíme ju a pošleme na schválenie. Po vašom potvrdení pristúpime k sériovej výrobe. Počas celého procesu ste informovaní o stave zákazky.",
+    question: "Ako prebieha spolupráca?",
+    answer: "Po prijatí zadania analyzujeme požiadavky a navrhneme postup. Vytvoríme vzorku na testovanie, ktorú vám pošleme na schválenie. Na základe spätnej väzby upravíme receptúru. Po finálnom schválení odovzdáme kompletnú technickú dokumentáciu.",
   },
   {
-    question: "Dodávate aj pre veľké série?",
-    answer: "Áno, máme kapacity na výrobu veľkých sérií. Pri väčších objemoch ponúkame výhodnejšie cenové podmienky. Veľkosériová výroba je vhodná pre automobilový priemysel, stavebníctvo a ďalšie odvetvia s vysokým odberom.",
+    question: "Pre aké objemy vyvíjate zmesi?",
+    answer: "Vyvíjame receptúry pre akékoľvek objemy - od malých špecializovaných aplikácií až po veľkosériovú výrobu. Receptúra je škálovateľná a pripravená na použitie u vašich výrobných partnerov.",
   },
   {
     question: "Aké materiály používate?",
-    answer: "Pracujeme s rôznymi druhmi gumy podľa požiadaviek aplikácie: prírodná guma, NBR (odolná voči olejom), EPDM (odolná voči poveternostným vplyvom), silikón (tepelná odolnosť) a ďalšie. Poradíme vám s výberom vhodného materiálu pre vašu aplikáciu.",
+    answer: "Pracujeme s rôznymi druhmi gumy: prírodná guma (NR), NBR (odolná voči olejom), EPDM (odolná voči poveternostným vplyvom a UV), silikón (tepelná odolnosť), CR, FKM a ďalšie. Poradíme s výberom vhodného materiálu pre vašu aplikáciu.",
   },
 ];
 
@@ -47,7 +47,7 @@ export function FAQ() {
         <SectionHeader
           tag="FAQ"
           title="Časté otázky"
-          description="Odpovede na najčastejšie otázky našich zákazníkov."
+          description="Odpovede na najčastejšie otázky o vývoji gumových zmesí."
           centered
           light
         />
