@@ -15,6 +15,7 @@ export const companyInfo = {
   },
   contact: {
     email: "info@rubber24.sk",
+    email2: "rubber24rubber24@gmail.com",
     phone: "+421 917 588 737",
     phoneFormatted: "+421-917-588-737",
   },

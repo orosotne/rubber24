@@ -38,8 +38,9 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    content: [companyInfo.contact.email],
+    content: [companyInfo.contact.email, companyInfo.contact.email2],
     href: `mailto:${companyInfo.contact.email}`,
+    href2: `mailto:${companyInfo.contact.email2}`,
   },
   {
     icon: Phone,
@@ -494,7 +495,14 @@ export function Contact() {
                     <h4 className="font-bold uppercase text-sm mb-1">{info.title}</h4>
                     {info.content.map((line, i) => (
                       <p key={i} className="text-gray-600">
-                        {info.href && i === 0 ? (
+                        {info.title === "Email" ? (
+                          <a 
+                            href={`mailto:${line}`} 
+                            className="hover:text-orange-500 transition-colors break-all"
+                          >
+                            {line}
+                          </a>
+                        ) : info.href && i === 0 ? (
                           <a href={info.href} className="hover:text-orange-500 transition-colors">
                             {line}
                           </a>

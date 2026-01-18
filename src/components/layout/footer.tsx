@@ -81,8 +81,12 @@ export function Footer() {
               </p>
               <p>
                 <span className="block text-white font-bold">Email:</span>
-                <a href="mailto:info@rubber24.sk" className="hover:text-orange-500 transition-colors">
+                <a href="mailto:info@rubber24.sk" className="hover:text-orange-500 transition-colors break-all">
                   info@rubber24.sk
+                </a>
+                <br />
+                <a href="mailto:rubber24rubber24@gmail.com" className="hover:text-orange-500 transition-colors break-all">
+                  rubber24rubber24@gmail.com
                 </a>
               </p>
               <p>
