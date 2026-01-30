@@ -14,7 +14,10 @@ async function verifyRecaptcha(token: string): Promise<{ success: boolean; score
   }
 
   if (!token) {
-    return { success: false, error: 'reCAPTCHA token missing' }
+    // Token missing - reCAPTCHA script might not have loaded (blocked network, etc.)
+    // Allow submission but log for monitoring
+    console.warn('reCAPTCHA token missing - script may not have loaded, allowing submission')
+    return { success: true }
   }
 
   try {
